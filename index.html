@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>YouTube Video Downloader</title>
+  </head>
+  <body>
+    <h1>YouTube Video Downloader</h1>
+    <input type="text" id="videoUrl" placeholder="Enter YouTube video URL" />
+    <button onclick="downloadVideo()">Download</button>
+    <script>
+      const { spawn } = require('child_process');
+      function downloadVideo() {
+        const videoUrl = document.getElementById('videoUrl').value;
+        const ytdl = spawn('yt-dlp', [videoUrl]);
+        ytdl.stdout.on('data', (data) => {
+          console.log(`stdout: ${data}`);
+        });
+        ytdl.stderr.on('data', (data) => {
+          console.error(`stderr: ${data}`);
+        });
+        ytdl.on('close', (code) => {
+          console.log(`child process exited with code ${code}`);
+        });
+      }
+    </script>
+  </body>
+</html>
